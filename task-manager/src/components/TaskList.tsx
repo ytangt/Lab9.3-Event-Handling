@@ -1,11 +1,16 @@
 import TaskFilter from "./TaskFilter";
 import TaskItem from "./TaskItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { TaskStatus, TaskListProps, Task } from "../types";
 
 function TaskList({ tasks, onStatusChange, onDelete }: TaskListProps) {
   const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks);
  
+  // 
+  useEffect(()=> {
+    setFilteredTasks(tasks);
+  },[tasks]);
+  
   const onFilterChange = (filters: {
     status?: TaskStatus;
     priority?: "low" | "medium" | "high";
@@ -30,35 +35,34 @@ function TaskList({ tasks, onStatusChange, onDelete }: TaskListProps) {
       if (!filters.status && !filters.priority) {
         return true;
       }
-    });
+    });      
 
-    console.log(results);
     setFilteredTasks(results);
     return results;
   };
   // add visual feedback:
     const getTaskStyles = (task: Task) => {
     let base =
-      "rounded-xl p-4 mb-3 cursor-pointer "; 
+      "rounded-xl p-4 mb-3 cursor-pointer transition-all duration-200 active:scale-95 "; 
 
     const statusStyles =
     task.status === "completed"
-      ? "bg-green-100 text-black"       
+      ? "bg-green-200 text-black"       
       : task.status === "in-progress"
-      ? "bg-blue-100 text-black"       
-      : "bg-yellow-100 text-black";      
+      ? "bg-blue-200 text-black"       
+      : "bg-yellow-200 text-black";      
     const priorityStyles =
     task.priority === "high"
-      ? "border-l-4 border-[#DB4437]"    
+      ? "border-l-8 border-[#DB4437] hover:border-8"    
       : task.priority === "medium"
-      ? "border-l-4 border-[#F4B400]"    
-      : "border-l-4 border-[#0F9D58]";   
+      ? "border-l-8 border-[#F4B400] hover:border-8"    
+      : "border-l-8 border-[#0F9D58] hover:border-8";   
 
     return `${base} ${statusStyles} ${priorityStyles}`;
   };
 
   return (
-    <div className="w-[50%] h-full">
+    <div className="w-[50%] h-full ">
       {/* <h2 className="text-4xl mb-10">Task List</h2> */}
       <TaskFilter onFilterChange={onFilterChange}/>
       {filteredTasks.map((task) => (

@@ -41,7 +41,7 @@ function TaskItem({ task, onStatusChange }: TaskItemProps) {
       <select
         value={currentStatus}
         onChange={handleChange}
-        className={`ml-auto h-10 rounded border bg-zinc-900 h-10 ${statusStyles[currentStatus]}`}
+        className={`ml-auto h-10 rounded border border-gray-300  bg-zinc-900 h-10 ${statusStyles[currentStatus]}`}
       >
         <option value="pending">
           <span>Pending</span>
